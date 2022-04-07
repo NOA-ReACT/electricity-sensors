@@ -65,19 +65,6 @@ public class GSFParser
     /// <returns></returns>
     public IEnumerable<RawXDataPacket> GetXData()
     {
-        /*        var xdata = new List<RawXDataPacket>();
-                var nodes = xml.Descendants("XdataOutputString");
-                foreach (var node in nodes)
-                {
-                    var timestamp = Convert.ToDouble(
-                        node.Descendants("Time").First().Value
-                    );
-                    var dataNode = node.Descendants("XdataValue").First();
-                    var bytes = dataNode.Attributes().Select(x => Convert.ToByte(x.Value)).ToArray();
-
-                    xdata.Add(new RawXDataPacket(timestamp, bytes));
-                }*/
-
         var xdata = new List<RawXDataPacket>();
         var frames = xml.Element("SENSORDATA")?.Descendants("Frame");
         if (frames == null)
