@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
 namespace NOAReact.ElectricitySensorDecoder.Library;
 
-internal class CSVFile
+/// <summary>
+/// Used to write XDataMessages to a CSV file
+/// </summary>
+public class CSVFile
 {
     public string Path { get; }
 
@@ -18,11 +17,18 @@ internal class CSVFile
         file = new StreamWriter(Path);
     }
 
+    /// <summary>
+    /// Write the CSV header (column names)
+    /// </summary>
     public void WriteHeader()
     {
         file.WriteLine("timestamp,frametime,is_valid,sensor_type,data");
     }
 
+    /// <summary>
+    /// Write a XDataMessage to the CSV file as a new row
+    /// </summary>
+    /// <param name="xdata">The message to write</param>
     public void WriteXDataMessage(XDataMessage xdata)
     {
         var lineSB = new StringBuilder();
@@ -50,6 +56,9 @@ internal class CSVFile
         file.WriteLine(lineSB.ToString());
     }
 
+    /// <summary>
+    /// Closes the output file
+    /// </summary>
     public void Dispose()
     {
         file?.Dispose();

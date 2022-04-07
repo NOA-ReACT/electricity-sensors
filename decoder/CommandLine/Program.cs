@@ -1,5 +1,7 @@
-﻿using System.CommandLine;
-using NOAReact.ElectricitySensorDecoder.Library;
+﻿using NOAReact.ElectricitySensorDecoder.Library;
+using System.CommandLine;
+
+namespace NOAReact.ElectricitySensorDecoder.CommandLine;
 
 class BatchTool
 {
@@ -12,8 +14,9 @@ class BatchTool
         var outputFileArgument = new Argument<string>("output", "Where to write CSV output");
         var printOption = new Option<bool>("--print", "Whether to print all data to the terminal");
         var convertVerb = new Command("convert") { inputFileArgument, outputFileArgument, printOption };
-        
-        convertVerb.SetHandler((string inputPath, string outputPath, bool printData) => {
+
+        convertVerb.SetHandler((string inputPath, string outputPath, bool printData) =>
+        {
             ConvertGSFFile(inputPath, outputPath, printData);
         }, inputFileArgument, outputFileArgument, printOption);
 
@@ -21,12 +24,13 @@ class BatchTool
 
         // Watch verb (continously convert GSF)
         var watchVerb = new Command("watch") { inputFileArgument, outputFileArgument, printOption };
-        watchVerb.SetHandler((string inputPath, string outputPath, bool printData) => {
+        watchVerb.SetHandler((string inputPath, string outputPath, bool printData) =>
+        {
             WatchGSFFile(inputPath, outputPath, printData);
         }, inputFileArgument, outputFileArgument, printOption);
 
         rootCommand.Add(watchVerb);
-        
+
         return rootCommand.Invoke(args);
     }
 
@@ -54,7 +58,7 @@ class BatchTool
         outputFile.WriteHeader();
 
         var packets = parser.GetXData();
-        foreach(var packet in packets)
+        foreach (var packet in packets)
         {
             var xdata = new XDataMessage(startTime, packet);
             if (printData)
