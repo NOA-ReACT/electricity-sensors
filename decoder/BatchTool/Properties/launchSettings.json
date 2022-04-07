@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BatchTool": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Users\\thgeorgiou\\Desktop\\GSF\\202204051218076967.gsf\" \"C:\\Users\\thgeorgiou\\Desktop\\GSF_CSV\""
+    }
+  }
+}
