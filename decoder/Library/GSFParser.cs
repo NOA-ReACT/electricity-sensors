@@ -56,7 +56,8 @@ public class GSFParser
     public GSFParser(string path)
     {
         this.path = path;
-        xml = XElement.Load(path);
+        var reader = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        xml = XElement.Load(reader);
     }
 
     /// <summary>
