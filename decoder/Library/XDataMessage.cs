@@ -70,14 +70,14 @@ public class XDataMessage
             byte[] counts = { RawData[2], RawData[3] };
             Variables["counts"] = BitConverter.ToInt16(counts);
 
-            byte[] roll = { RawData[4], RawData[5] };
-            Variables["roll"] = BitConverter.ToDouble(roll);
+            byte[] roll = { RawData[4], RawData[5], RawData[6], RawData[7] };
+            Variables["roll"] = BitConverter.ToSingle(roll);
 
-            byte[] pitch = { RawData[6], RawData[7] };
-            Variables["pitch"] = BitConverter.ToDouble(pitch);
+            byte[] pitch = { RawData[8], RawData[9], RawData[10], RawData[11] };
+            Variables["pitch"] = BitConverter.ToSingle(pitch);
 
-            byte[] yaw = { RawData[8], RawData[9] };
-            Variables["yaw"] = BitConverter.ToDouble(yaw);
+            byte[] yaw = { RawData[12], RawData[13], RawData[14], RawData[15] };
+            Variables["yaw"] = BitConverter.ToSingle(yaw);
         } else if (SensorType == ElectritySensorType.SPACE_CHARGE)
         {
             byte[] counts = { RawData[2], RawData[3] };
