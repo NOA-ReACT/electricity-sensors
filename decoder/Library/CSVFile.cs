@@ -11,6 +11,8 @@ public class CSVFile
 
     private readonly StreamWriter file;
 
+    private readonly string[] dataColumns = { "space_counts", "space_state", "mill_valid", "mill_counts", "mill_roll", "mill_pitch", "mill_yaw" };
+
     public CSVFile(string path)
     {
         Path = path;
@@ -22,7 +24,7 @@ public class CSVFile
     /// </summary>
     public void WriteHeader()
     {
-        file.WriteLine("timestamp,frametime,is_valid,sensor_type,data");
+        file.WriteLine($"timestamp,frametime,is_valid,{string.Join(',', dataColumns)}");
     }
 
     /// <summary>
@@ -40,17 +42,15 @@ public class CSVFile
         lineSB.Append(',');
 
         lineSB.Append(xdata.IsValid);
-        lineSB.Append(',');
 
-        lineSB.Append(xdata.SensorType);
-        lineSB.Append(',');
-
-        foreach (KeyValuePair<string, object> kv in xdata.Variables)
+        foreach (string key in dataColumns)
         {
-            lineSB.Append(kv.Key);
-            lineSB.Append('=');
-            lineSB.Append(kv.Value);
-            lineSB.Append(' ');
+            lineSB.Append(',');
+            if (xdata.Variables.ContainsKey(key))
+            {
+                lineSB.Append(xdata.Variables[key]);
+            }
+
         }
 
         file.WriteLine(lineSB.ToString());

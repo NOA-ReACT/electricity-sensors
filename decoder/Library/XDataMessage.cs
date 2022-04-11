@@ -2,14 +2,6 @@
 
 namespace NOAReact.ElectricitySensorDecoder.Library;
 
-public enum ElectritySensorType : byte
-{
-    FIELD_MILL = 0xAA,
-    SPACE_CHARGE = 0xAB,
-    UNKNOWN = 0x00
-}
-
-
 public class XDataMessage
 {
     public double FrameTime { get; }
@@ -21,8 +13,6 @@ public class XDataMessage
     public bool IsValid { get; private set; } = false;
 
     public string? Error { get; private set; }
-
-    public ElectritySensorType SensorType { get; private set; }
 
     public Dictionary<string, object> Variables { get; } = new Dictionary<string, object>();
 
@@ -56,36 +46,32 @@ public class XDataMessage
 
         // Grab sensor ID, try to detect sensor type
         var sensorTypeId = RawData[1];
-        if (!Enum.IsDefined(typeof(ElectritySensorType), sensorTypeId))
+        if (sensorTypeId != 0xAB)
         {
-            SensorType = ElectritySensorType.UNKNOWN;
+            IsValid = false;
             Error = $"Unknown sensor ID 0x{sensorTypeId.ToString("X")}";
             return;
         }
-        SensorType = (ElectritySensorType)sensorTypeId;
 
-        // Parse numbers from RawData into Variables
-        if (SensorType == ElectritySensorType.FIELD_MILL)
-        {
-            byte[] counts = { RawData[2], RawData[3] };
-            Variables["counts"] = BitConverter.ToInt16(counts);
+        // Parse number from RawData into Variables
+        byte[] counts = { RawData[2], RawData[3] };
+        Variables["space_counts"] = BitConverter.ToInt16(counts);
 
-            byte[] roll = { RawData[4], RawData[5], RawData[6], RawData[7] };
-            Variables["roll"] = BitConverter.ToSingle(roll);
+        Variables["space_state"] = RawData[4];
 
-            byte[] pitch = { RawData[8], RawData[9], RawData[10], RawData[11] };
-            Variables["pitch"] = BitConverter.ToSingle(pitch);
+        Variables["mill_valid"] = RawData[5];
 
-            byte[] yaw = { RawData[12], RawData[13], RawData[14], RawData[15] };
-            Variables["yaw"] = BitConverter.ToSingle(yaw);
-        } else if (SensorType == ElectritySensorType.SPACE_CHARGE)
-        {
-            byte[] counts = { RawData[2], RawData[3] };
-            Variables["counts"] = BitConverter.ToInt16(counts);
+        byte[] millCounts = { RawData[6], RawData[7] };
+        Variables["mill_counts"] = BitConverter.ToInt16(millCounts);
 
-            //byte[] state = {  };
-            Variables["state"] = RawData[4];
-        }
+        byte[] millRoll = { RawData[8], RawData[9] };
+        Variables["mill_roll"] = BitConverter.ToInt16(millRoll);
+
+        byte[] millPitch = { RawData[10], RawData[11] };
+        Variables["mill_pitch"] = BitConverter.ToInt16(millPitch);
+
+        byte[] millYaw = { RawData[12], RawData[13] };
+        Variables["mill_yaw"] = BitConverter.ToInt16(millYaw);
 
         IsValid = true;
     }
@@ -94,6 +80,6 @@ public class XDataMessage
     {
         var valid = IsValid ? "Valid" : $"Invalid - {Error}";
         var data = JsonSerializer.Serialize(Variables);
-        return $"XDATA ({valid}): Timestamp: {Timestamp}, SensorType: {SensorType}, Data: {data}";
+        return $"XDATA ({valid}): Timestamp: {Timestamp}, Data: {data}";
     }
 }
