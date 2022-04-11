@@ -88,11 +88,24 @@ class BatchTool
 
         var watcher = new FileSystemWatcher(inputParent.FullName);
         watcher.Filter = filter;
-        watcher.Changed += (sender, e) => ConvertGSFFile(inputPath, outputPath, printData);
-        watcher.Created += (sender, e) => ConvertGSFFile(inputPath, outputPath, printData);
+        watcher.Changed += (sender, e) => HandleChangedFile(inputPath, outputPath, printData);
+        watcher.Created += (sender, e) => HandleChangedFile(inputPath, outputPath, printData);
         watcher.EnableRaisingEvents = true;
 
         Console.WriteLine($"Watching {filter} for new data. Press any key to stop.");
         Console.ReadLine();
+    }
+
+    static void HandleChangedFile(string inputPath, string outputPath, bool printData)
+    {
+        try
+        {
+            ConvertGSFFile(inputPath, outputPath, printData);
+        }
+        catch (GSFFileError ex)
+        {
+            Console.WriteLine("Encountered an error when parsing GSF file:");
+            Console.WriteLine(ex.Message);
+        }
     }
 }
