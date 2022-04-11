@@ -98,6 +98,9 @@ class BatchTool
 
     static void HandleChangedFile(string inputPath, string outputPath, bool printData)
     {
+        // Give GRAWMET some time to write the files
+        Thread.Sleep(500);
+
         try
         {
             ConvertGSFFile(inputPath, outputPath, printData);
@@ -107,5 +110,7 @@ class BatchTool
             Console.WriteLine("Encountered an error when parsing GSF file:");
             Console.WriteLine(ex.Message);
         }
+
+
     }
 }
