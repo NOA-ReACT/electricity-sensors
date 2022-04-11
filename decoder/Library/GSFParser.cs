@@ -97,8 +97,12 @@ public class GSFParser
             var parent = Directory.GetParent(path);
             var nextFilePath = $"{parent!.FullName}\\{nextFileName}";
 
-            var nextFileParser = new GSFParser(nextFilePath);
-            xdata.AddRange(nextFileParser.GetXData());
+            // Sometimes GrawMet creates the "NextFile" node but not the actual file on disk.
+            if (File.Exists(nextFilePath))
+            {
+                var nextFileParser = new GSFParser(nextFilePath);
+                xdata.AddRange(nextFileParser.GetXData());
+            }
         }
 
         return xdata;
