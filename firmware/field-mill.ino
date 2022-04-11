@@ -203,38 +203,28 @@ void setup()
   digitalWrite(LED_BUILTIN, LOW);
 }
 
-void uartInt(int v)
+void sendSerial(int counts, float roll, float pitch, float yaw)
 {
-  char buffer[4];
-  byte *p = reinterpret_cast<byte *>(&v);
-  for (int i = 0; i < sizeof(v); i++)
-  {
-    sprintf(buffer, "%02X", (byte)p[i]);
-    Serial.write(buffer[0]);
-    Serial.write(buffer[1]);
-  }
-}
+  Serial.write('N');
+  Serial.write('O');
+  Serial.write('A');
 
-void uartFloat(float v)
-{
-  char buffer[4];
-  byte *p = reinterpret_cast<byte *>(&v);
-  for (int i = 0; i < sizeof(v); i++)
-  {
-    sprintf(buffer, "%02X", (byte)p[i]);
-    Serial.write(buffer[0]);
-    Serial.write(buffer[1]);
-  }
-}
+  Serial.write(0xFF & (counts >> 8));
+  Serial.write(0xFF & (counts));
 
-void sendXDataFieldMill(int counts, float roll, float pitch, float yaw)
-{
-  Serial.print("xdata=01AA");
-  uartInt(counts);
-  uartFloat(roll);
-  uartFloat(pitch);
-  uartFloat(yaw);
-  Serial.println();
+  int rollInt = roll * 100;
+  Serial.write(0xFF & (rollInt >> 8));
+  Serial.write(0xFF & (rollInt));
+
+  int pitchInt = pitch * 100;
+  Serial.write(0xFF & (pitchInt >> 8));
+  Serial.write(0xFF & (pitchInt));
+
+  int yawInt = yaw * 100;
+  Serial.write(0xFF & (yawInt >> 8));
+  Serial.write(0xFF & (yawInt));
+
+  Serial.write(0x04); // End-of-transmission
 }
 
 void loop()
@@ -245,8 +235,8 @@ void loop()
   // Get orientation from the MPU6050
   readMPU6050(0x68, &roll, &pitch, &yaw);
 
-  // Transmit the measurements through the XData UART interface
-  sendXDataFieldMill(millCounts, roll, pitch, yaw);
+  // Transmit the measurements through the UART interface to the space charge sensor
+  sendSerial(millCounts, roll, pitch, yaw);
 
   delay(1000);
 }

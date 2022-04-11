@@ -17,6 +17,16 @@ unsigned long lastCalibrationTime = 0;
 // 2 = Calibration stage 2
 byte state = 0;
 
+// Used to store the data from the field mill, in case they must be forwarded
+// We only expect 11 bytes.
+byte fieldMillBuffer[20];
+
+byte fieldMillHasData = 0;
+int fieldMillCounts = -1;
+int fieldMillRoll = -1;
+int fieldMillPitch = -1;
+int fieldMillYaw = -1;
+
 /**
  * Get an average counts reading from the ADC
  *
@@ -76,8 +86,12 @@ void sendXDataSpaceCharge(int counts, byte state)
   Serial.print("xdata=01AB");
   uartInt(counts);
   uartByte(state);
+  uartByte(fieldMillHasData);
+  uartInt(fieldMillCounts);
+  uartInt(fieldMillRoll);
+  uartInt(fieldMillPitch);
+  uartInt(fieldMillYaw);
   Serial.println();
-  Serial.setTimeout(300);
 }
 
 void setup()
@@ -85,6 +99,7 @@ void setup()
   Serial.begin(9600);
   while (!Serial)
     ;
+  Serial.setTimeout(100L);
 
   // Calibration output pins
   pinMode(12, OUTPUT);
@@ -145,15 +160,33 @@ void loop()
     }
   }
 
-  // Send data through UART
-  sendXDataSpaceCharge(counts, state);
-
-  // Forward packet if available
-  if (Serial.available() > 10)
+  // Read data from field mill, if available
+  int rec = Serial.readBytesUntil(0x04, fieldMillBuffer, 20);
+  for (byte i = 0; i < rec && i <= 9; i++)
   {
-    String incoming = Serial.readStringUntil("\n");
-    Serial.print(incoming);
+    if (
+        fieldMillBuffer[i] == 'N' &&
+        fieldMillBuffer[i + 1] == 'O' &&
+        fieldMillBuffer[i + 2] == 'A')
+    {
+      fieldMillCounts = (fieldMillBuffer[i + 3] << 8) | fieldMillBuffer[i + 4];
+      fieldMillRoll = (fieldMillBuffer[i + 5] << 8) | fieldMillBuffer[i + 6];
+      fieldMillPitch = (fieldMillBuffer[i + 7] << 8) | fieldMillBuffer[i + 8];
+      fieldMillYaw = (fieldMillBuffer[i + 9] << 8) | fieldMillBuffer[i + 10];
+      fieldMillHasData = 1;
+    }
   }
+}
 
-  delay(500);
+// Send data through UART
+sendXDataSpaceCharge(counts, state);
+
+// Zero out field-mill data
+fieldMillCounts = -1;
+fieldMillRoll = -1;
+fieldMillPitch = -1;
+fieldMillYaw = -1;
+fieldMillHasData = 0;
+
+delay(500);
 }
