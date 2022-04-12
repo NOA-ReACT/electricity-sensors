@@ -176,17 +176,16 @@ void loop()
       fieldMillHasData = 1;
     }
   }
-}
 
-// Send data through UART
-sendXDataSpaceCharge(counts, state);
+  // Send data through UART
+  sendXDataSpaceCharge(counts, state);
 
-// Zero out field-mill data
-fieldMillCounts = -1;
-fieldMillRoll = -1;
-fieldMillPitch = -1;
-fieldMillYaw = -1;
-fieldMillHasData = 0;
+  // Zero out field-mill data
+  fieldMillCounts = -1;
+  fieldMillRoll = -1;
+  fieldMillPitch = -1;
+  fieldMillYaw = -1;
+  fieldMillHasData = 0;
 
-delay(500);
+  delay(500);
 }
