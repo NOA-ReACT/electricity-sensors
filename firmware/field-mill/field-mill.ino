@@ -2,6 +2,12 @@
  * NOA ReACT - Field Mill
  */
 
+// Uncomment SERIAL_BINARY to use binary format when sending data through the UART.
+// Uncomment SERIAL_TEXT to send data in text format through the UART.
+// Use SERIAL_BINARY when chaining to a space mill sensor. Do not uncomment both!
+#define SERIAL_BINARY
+// #define SERIAL_TEXT
+
 #include <Servo.h>
 #include <Wire.h>
 
@@ -205,6 +211,7 @@ void setup()
   digitalWrite(LED_BUILTIN, LOW);
 }
 
+#ifdef SERIAL_BINARY
 void sendSerial(int counts, float roll, float pitch, float yaw)
 {
   Serial.write('N');
@@ -228,6 +235,24 @@ void sendSerial(int counts, float roll, float pitch, float yaw)
 
   Serial.write(0x04); // End-of-transmission
 }
+#endif
+
+#ifdef SERIAL_TEXT
+void sendSerial(int counts, float roll, float pitch, float yaw)
+{
+  Serial.print("counts: ");
+  Serial.print(counts);
+
+  Serial.print(", roll: ");
+  Serial.print(roll);
+
+  Serial.print(", pitch: ");
+  Serial.print(pitch);
+
+  Serial.print(", yaw: ");
+  Serial.println(yaw);
+}
+#endif
 
 void loop()
 {
