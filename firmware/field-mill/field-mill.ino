@@ -21,9 +21,6 @@ float accErrorX, accErrorY, gyroErrorX, gyroErrorY, gyroErrorZ;
 float elapsedTime, currentTime, previousTime;
 int c = 0;
 
-// Counts from ADC/Field Mill
-int millCounts = 0;
-
 /**
  * Initializes the MPU6050 gyro through I2C
  */
@@ -149,21 +146,26 @@ void readMPU6050(byte id, float *roll, float *pitch, float *yaw)
   *pitch = 0.96 * gyroAngleY + 0.04 * accAngleY;
 }
 
-/**
- * Get an average counts reading from the ADC
- *
- * @param port     Which ADC to read from
- * @param samples  How many samples to take
- * @param counts   Where to store the average counts
- */
-void getAveragedCounts(int port, int samples, int *counts)
+int getAnalogPeakToPeak()
 {
-  long sum = 0;
-  for (int i = 0; i < samples; i++)
+  int tmp = analogRead(0);
+  int min = tmp;
+  int max = tmp;
+
+  for (int i = 0; i < 9500; i++)
   {
-    sum += analogRead(port);
+    tmp = analogRead(0);
+    if (tmp > max)
+    {
+      max = tmp;
+    }
+    if (tmp < min)
+    {
+      min = tmp;
+    }
   }
-  *counts = sum / samples;
+
+  return max - min;
 }
 
 void setup()
@@ -230,13 +232,11 @@ void sendSerial(int counts, float roll, float pitch, float yaw)
 void loop()
 {
   // Take a field mill reading
-  getAveragedCounts(A0, 10, &millCounts);
+  int millCounts = getAnalogPeakToPeak();
 
   // Get orientation from the MPU6050
   readMPU6050(0x68, &roll, &pitch, &yaw);
 
   // Transmit the measurements through the UART interface to the space charge sensor
   sendSerial(millCounts, roll, pitch, yaw);
-
-  delay(1000);
 }
