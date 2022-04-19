@@ -5,7 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NOAReact.ElectricitySensorDecoder.UI"
         mc:Ignorable="d"
-        Title="NOA ReACT: XDATA Decoder for Electricity Sensors" Height="450" Width="800">
+        Title="NOA ReACT: XDATA Decoder for Electricity Sensors"
+        Height="450"
+        Width="800">
+
+    <Window.DataContext>
+        <local:MainWindowState x:Name="state" />
+    </Window.DataContext>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -14,9 +21,9 @@
         <Grid.RowDefinitions>
             <RowDefinition />
         </Grid.RowDefinitions>
-        
+
         <WpfPlot x:Name="plotArea" Grid.Column="0" />
-        
+
         <StackPanel Grid.Column="1">
             <GroupBox Header="File">
                 <StackPanel>
@@ -28,10 +35,11 @@
                             <Setter Property="Margin" Value="0,0,0,5"/>
                         </Style>
                     </StackPanel.Resources>
-                    
+
                     <TextBox x:Name="txtCurrentFile" Text="No file opened"  />
-                    <Button x:Name="btnOpen" Content="Open GSF file..." Click="btnOpen_Click" />
-                    <Button x:Name="btnToCSV" Content="Export to .csv..." IsEnabled="False" />
+                    <Button x:Name="btnOpen" Content="Open GSF file..." Click="btnOpen_Click" IsEnabled="{Binding Path=OpenEnabled}" />
+                    <Button x:Name="btnClose" Content="Close GSF file" IsEnabled="{Binding Path=CloseEnabled}" Click="btnClose_Click" />
+                    <Button x:Name="btnToCSV" Content="Export to .csv..." IsEnabled="{Binding Path=CloseEnabled}" Click="btnToCSV_Click" />
                 </StackPanel>
             </GroupBox>
 
