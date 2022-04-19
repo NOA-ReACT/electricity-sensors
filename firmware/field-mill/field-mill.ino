@@ -144,13 +144,13 @@ void sendSerial(int counts)
   Serial.print(counts);
 
   Serial.print(", roll: ");
-  Serial.print(roll);
+  Serial.print(ypr[2]);
 
   Serial.print(", pitch: ");
-  Serial.print(pitch);
+  Serial.print(ypr[1]);
 
   Serial.print(", yaw: ");
-  Serial.println(yaw);
+  Serial.println(ypr[0]);
 }
 #endif
 
