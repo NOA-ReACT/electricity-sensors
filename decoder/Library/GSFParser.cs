@@ -1,6 +1,7 @@
 ﻿using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Linq;
+using System.Globalization;
 
 namespace NOAReact.ElectricitySensorDecoder.Library;
 
@@ -116,6 +117,7 @@ public class GSFParser
             throw new GSFFileError(this.path, "Could not locate Header/RecordStartDate node. Is this the first file (ie. not gsf1, gsf2, ...)?");
         }
 
-        return DateTime.Parse(node.Value);
+        // 04/17/2022 08:19:28
+        return DateTime.ParseExact(node.Value, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
     }
 }
