@@ -127,7 +127,7 @@ void setup()
 
 void loop()
 {
-  // Take a field mill measurement
+  // Take a ADC measurement
   getAveragedCounts(cellPin, 1000, &counts);
 
   // Handle calibration

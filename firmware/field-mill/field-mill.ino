@@ -15,7 +15,6 @@
 #include "I2Cdev.h"
 #include "MPU6050_6Axis_MotionApps20.h"
 
-
 /** Servo motor **/
 Servo myservo;
 
@@ -31,8 +30,9 @@ float ypr[3];
 
 /** Interrupt handler for MPU */
 volatile bool mpuInterrupt = false;
-void dmpDataReady() {
-    mpuInterrupt = true;
+void dmpDataReady()
+{
+  mpuInterrupt = true;
 }
 
 /**
@@ -59,26 +59,14 @@ void setupMPU6050()
   mpuPacketSize = mpu.dmpGetFIFOPacketSize();
 }
 
-int getAnalogPeakToPeak()
+int getAnalogMean()
 {
-  int tmp = analogRead(0);
-  int min = tmp;
-  int max = tmp;
-
+  unsigned long sum = 0;
   for (int i = 0; i < 9500; i++)
   {
-    tmp = analogRead(0);
-    if (tmp > max)
-    {
-      max = tmp;
-    }
-    if (tmp < min)
-    {
-      min = tmp;
-    }
+    sum += analogRead(0);
   }
-
-  return max - min;
+  return sum / 9500;
 }
 
 void setup()
@@ -121,15 +109,15 @@ void sendSerial(int counts)
   Serial.write(0xFF & (counts >> 8));
   Serial.write(0xFF & (counts));
 
-  int rollInt = (ypr[2] * 180/M_PI) * 100;
+  int rollInt = (ypr[2] * 180 / M_PI) * 100;
   Serial.write(0xFF & (rollInt >> 8));
   Serial.write(0xFF & (rollInt));
 
-  int pitchInt = (ypr[1] * 180/M_PI) * 100;
+  int pitchInt = (ypr[1] * 180 / M_PI) * 100;
   Serial.write(0xFF & (pitchInt >> 8));
   Serial.write(0xFF & (pitchInt));
 
-  int yawInt = (ypr[0] * 180/M_PI) * 100;
+  int yawInt = (ypr[0] * 180 / M_PI) * 100;
   Serial.write(0xFF & (yawInt >> 8));
   Serial.write(0xFF & (yawInt));
 
@@ -157,7 +145,7 @@ void sendSerial(int counts)
 void loop()
 {
   // Take a field mill reading
-  int millCounts = getAnalogPeakToPeak();
+  int millCounts = getAnalogMean();
 
   // Get orientation from the MPU6050
   mpu.dmpGetCurrentFIFOPacket(mpuFifoBuffer);
