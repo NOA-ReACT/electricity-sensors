@@ -14,8 +14,8 @@ In this repository you can find:
 - `decoder`: A library, CMD tool and UI tool for decoding XDATA packages transmitted by the sensors through a GRAW radiosonde. Written in C#.
 - `firmware`: Arduino sketches for the microcontrollers of the two sensors.
 - `pcb`: Board designs in Eagle
-- 'MiniMill_specs.pdf': Miniature Field-Mill Electrometer technical specifications
-- 'Charge_sensor_specs.pdf': Space Charge Sensor technical specifications
+- `MiniMill_specs.pdf`: Miniature Field-Mill Electrometer technical specifications
+- `Charge_sensor_specs.pdf`: Space Charge Sensor technical specifications
 
 ## Blame
 
