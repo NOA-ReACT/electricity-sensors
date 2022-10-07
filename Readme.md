@@ -2,10 +2,10 @@
 
 This repository contains everything related to the development of Atmospheric Electricity Sensors at ReACT. Specifically, two such sensors are worked on, designed to be suitable for weather balloon deployments:
 
-- Miniature Field-Mill
+- Miniature Field-Mill Electrometer
 - Space Charge Sensor
 
-Documentation is not included in this repository. You should refer to the [project's book on ReACT knowledge base](https://react.space.noa.gr/kb/books/electricity-sensors).
+Full documentation is included in the Wiki page: XXX.
 
 ## Index
 
@@ -14,6 +14,8 @@ In this repository you can find:
 - `decoder`: A library, CMD tool and UI tool for decoding XDATA packages transmitted by the sensors through a GRAW radiosonde. Written in C#.
 - `firmware`: Arduino sketches for the microcontrollers of the two sensors.
 - `pcb`: Board designs in Eagle
+- 'MiniMill_specs.pdf': Miniature Field-Mill Electrometer technical specifications
+- 'Charge_sensor_specs.pdf': Space Charge Sensor technical specifications
 
 ## Blame
 
