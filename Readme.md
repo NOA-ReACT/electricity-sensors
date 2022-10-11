@@ -5,7 +5,7 @@ This repository contains everything related to the development of Atmospheric El
 - Miniature Field-Mill Electrometer
 - Space Charge Sensor
 
-Full documentation is included in the Wiki page: XXX.
+Full documentation is included in the Wiki page: https://github.com/NOA-ReACT/electricity-sensors/wiki.
 
 ## Index
 
