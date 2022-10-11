@@ -1,6 +1,6 @@
 # Electricity sensors
 
-This repository contains everything related to the development of Atmospheric Electricity Sensors at ReACT. Specifically, two such sensors are worked on, designed to be suitable for weather balloon deployments:
+This repository contains everything related to the development of Atmospheric Electricity Sensors at the ReACT team of the National Observatory of Athens. Specifically, two such sensors are worked on, designed to be suitable for weather balloon deployments:
 
 - Miniature Field-Mill Electrometer
 - Space Charge Sensor
