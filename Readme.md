@@ -17,6 +17,9 @@ In this repository you can find:
 - `MiniMill_specs.pdf`: Miniature Field-Mill Electrometer technical specifications
 - `Charge_sensor_specs.pdf`: Space Charge Sensor technical specifications
 
+## Acknowlegements
+This research was supported by D-TECT (Grant Agreement 725698) funded by the European Research Council (ERC) under the European Union's Horizon 2020 research and innovation programme.
+
 ## Blame
 
 - **Team lead:** Lilly Daskalopoulou <vdaskalop@noa.gr> @ModusElectrificus
