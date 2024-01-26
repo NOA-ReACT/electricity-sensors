@@ -21,7 +21,7 @@ This research was supported by D-TECT (Grant Agreement 725698) funded by the Eur
 
 ## Blame
 
-- **Team lead:** Lilly Daskalopoulou <vdaskalop@noa.gr> @ModusElectrificus
+- **Team lead**: Lilly Daskalopoulou <vdaskalop@noa.gr> @ModusElectrificus
 - **Hardware Engineering**: Vasilis Spanakis-Misirlis <vspanakis@noa.gr>
 - **Consulting**: Thanasis Georgiou <ageorgiou@noa.gr> @thgeorgiou
 
